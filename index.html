@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,23 +14,32 @@
       padding: 0;
       box-sizing: border-box;
       font-family: "Roboto", sans-serif;
-	  font-weight: lighter;
+      font-weight: lighter;
     }
     body {
       background: #0e0e10;
       color: #f2f2f2;
       line-height: 1.6;
+      position: relative;
+      overflow-x: hidden;
+    }
+    canvas#bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
     }
     header {
-		background: #141614;
-		padding: 2rem;
-		text-align: center;
-		border-bottom: 1px solid #252525;
+      background: #14161490;
+      padding: 2rem;
+      text-align: center;
+      border-bottom: 1px solid #252525;
+      backdrop-filter: blur(2px);
     }
-	header h1 {
-		font-size: 2.5rem;
-		color: #00ff22;
-		font-weight: lighter;
+    header h1 {
+      font-size: 2.5rem;
+      color: #00ff22;
+      font-weight: lighter;
     }
     nav {
       margin-top: 1rem;
@@ -44,9 +54,11 @@
       color: #00ff22;
     }
     main {
+      background: #0e0e0ecc;
       max-width: 800px;
-      margin: 3rem auto;
-      padding: 0 1rem;
+      /*margin: 3rem auto;*/
+      padding: 3rem 1rem;
+     /* padding: 0 1rem;*/
     }
     section {
       margin-bottom: 3rem;
@@ -65,19 +77,21 @@
       margin-top: 1rem;
     }
     footer {
+      background: #0e0e0edd;
       text-align: center;
       padding: 2rem;
       border-top: 1px solid #333;
       font-size: 0.9rem;
       color: #777;
     }
-	a {
-		color: #00ff22;
-		text-decoration: none;
-	}
+    a {
+      color: #00ff22;
+      text-decoration: none;
+    }
   </style>
 </head>
 <body>
+  <canvas id="bg"></canvas>
   <header>
     <h1>Protolab</h1>
     <nav>
@@ -110,7 +124,7 @@
         <p><a href="/pages/ruretto.html">Ruretto: Web Version</a></p>
       </div>
     </section>
-    <section id="contact"> 
+    <section id="contact">
       <h2>Contact</h2>
       <p>Got feedback or want to collaborate? Reach out on <a href="mailto:mahdinh2077@gmail.com" style="color:#00ff22;">mahdinh2077@gmail.com</a>.</p>
     </section>
@@ -118,5 +132,83 @@
   <footer>
     &copy; 2025 Protolab. All rights reserved.
   </footer>
+  <script>
+    const canvas = document.getElementById("bg");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particles = [];
+    const numParticles = 100;
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+        this.radius = 1 + Math.random() * 1.5;
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // Bounce off walls
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = "#00ff22";
+        ctx.fill();
+      }
+    }
+
+    function init() {
+      for (let i = 0; i < numParticles; i++) {
+        particles.push(new Particle());
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particles.length; i++) {
+        const p1 = particles[i];
+        p1.update();
+        p1.draw();
+
+        // Draw lines to nearby particles
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dx = p1.x - p2.x;
+          const dy = p1.y - p2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 100) {
+            ctx.beginPath();
+            ctx.strokeStyle = "rgba(0, 255, 34," + (1 - dist / 100) + ")";
+            ctx.lineWidth = 0.5;
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    window.addEventListener("resize", () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+
+    init();
+    animate();
+  </script>
 </body>
 </html>
