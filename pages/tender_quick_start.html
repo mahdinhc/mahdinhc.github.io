@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tender Language Guide</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; background: #f9f9f9; }
+    pre { background: #f0f0f0; padding: 10px; border-radius: 5px; overflow-x: auto; }
+    code { font-family: monospace; }
+    h1, h2, h3 { color: #333; }
+    hr { margin: 30px 0; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+  </style>
+</head>
+<body>
+
+<h1>Hey, and welcome to Tender!</h1>
+
+<p>
+  Tender is a flexible and beginner-friendly programming language that’s both powerful and simple.
+  Whether you’re building something serious or just having fun, Tender is designed to help you get up and running fast.
+</p>
+
+<p>Let’s dive in and explore the basics together!</p>
+
+<hr>
+
+<h3>Variables</h3>
+
+<p>
+  In Tender, you can declare variables easily using <code>:=</code>, or with <code>var</code> if you want more control.
+  No need to specify types—Tender figures them out for you.
+</p>
+
+<pre><code>name := "Alice"       // String  
+age := 30             // Integer  
+pi := 3.14            // Float  
+is_admin := false     // Boolean  
+var year = bigint(2024)       // Big integer  
+var c = complex(pi, age)      // Complex number
+</code></pre>
+
+<h4>Reassigning Variables</h4>
+<p>Variables are dynamically typed, so you can change their type later if you want.</p>
+
+<pre><code>age = "Thirty"  // Now 'age' is a string  
+println(age)    // Output: Thirty
+</code></pre>
+
+<hr>
+
+<h3>Data Types</h3>
+
+<p>Tender supports all the types you’d expect:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Example</th>
+      <th>What it is</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>string</td><td>"Hello"</td><td>Text</td></tr>
+    <tr><td>int</td><td>42</td><td>Whole numbers</td></tr>
+    <tr><td>float</td><td>-19.84</td><td>Decimals</td></tr>
+    <tr><td>bool</td><td>true / false</td><td>True or false</td></tr>
+    <tr><td>char</td><td>'A'</td><td>A single character</td></tr>
+    <tr><td>time</td><td>time()</td><td>The current time</td></tr>
+    <tr><td>bigint</td><td>bigint(42)</td><td>Huge whole numbers</td></tr>
+    <tr><td>bigfloat</td><td>bigfloat(1000.11)</td><td>Super precise decimals</td></tr>
+    <tr><td>complex</td><td>complex(1, 2)</td><td>Complex numbers</td></tr>
+  </tbody>
+</table>
+
+<hr>
+
+<h3>Arrays and Maps</h3>
+
+<h4>Arrays</h4>
+<p>Arrays are ordered lists. You can put anything in them.</p>
+
+<pre><code>fruits := ["Apple", "Banana", "Cherry"]  
+println(fruits[0])  // Output: Apple
+</code></pre>
+
+<h4>Maps</h4>
+<p>Maps are like dictionaries—key-value pairs.</p>
+
+<pre><code>person := {name: "Alice", age: 30, is_admin: true}  
+println(person["name"])  // Output: Alice
+</code></pre>
+
+<hr>
+
+<h3>Control Flow</h3>
+
+<h4>If/Else</h4>
+<p>Tender uses a clean if/else syntax. You can even initialize variables inside the if.</p>
+
+<pre><code>if age := 30; age > 18 {
+    println("Adult")
+} else {
+    println("Minor")
+}
+</code></pre>
+
+<hr>
+
+<h3>Loops</h3>
+
+<h4>For Loop</h4>
+
+<pre><code>numbers := [1, 2, 3, 4]
+for i := 0; i < len(numbers); i++ {
+    println(numbers[i])
+}
+</code></pre>
+
+<h4>For-Each</h4>
+
+<pre><code>fruits := ["mango", "apple", "banana"]
+for i, fruit in fruits {
+    if fruit == "apple" {
+        continue
+    } else if i == len(fruits) {
+        break
+    }
+    println(fruit)
+}
+</code></pre>
+
+<h4>For Condition</h4>
+
+<pre><code>for true {
+    println("looping forever?")
+}
+</code></pre>
+
+<h4>For Infinity</h4>
+
+<pre><code>for {}
+</code></pre>
+
+<hr>
+
+<h3>Functions</h3>
+
+<p>Define a function using <code>fn</code>. It can take arguments and return stuff.</p>
+
+<pre><code>greet := fn(name) {
+    return "Hello, " + name
+}
+println(greet("Alice"))
+</code></pre>
+
+<p>You can also declare functions like this:</p>
+
+<pre><code>fn greet(name) {
+    return "Hello, " + name
+}
+</code></pre>
+
+<h4>Passing Functions</h4>
+
+<pre><code>each := fn(arr, action) {
+    for x in arr {
+        action(x)
+    }
+}
+each([1, 2, 3], fn(n) {
+    println(n)
+})
+</code></pre>
+
+<hr>
+
+<h3>Closures</h3>
+
+<p>Closures let you create private variables inside functions:</p>
+
+<pre><code>counter := fn() {
+    count := 0
+    return fn() {
+        count += 1
+        return count
+    }
+}
+next := counter()
+println(next())  // 1  
+println(next())  // 2
+</code></pre>
+
+<hr>
+
+<h3>Recursion & Tail-Call Optimization</h3>
+
+<pre><code>factorial := fn(n, acc) {
+    if n == 0 {
+        return acc
+    }
+    return factorial(n - 1, acc * n)
+}
+println(factorial(5, 1))  // Output: 120
+</code></pre>
+
+<hr>
+
+<h3>Slicing</h3>
+
+<pre><code>str := "hello world"
+println(str[0:5])  // hello
+
+arr := [10, 20, 30, 40, 50]
+println(arr[1:4])  // [20, 30, 40]
+</code></pre>
+
+<hr>
+
+<h3>Type Conversion</h3>
+
+<pre><code>str_num := string(42)   // "42"  
+int_num := int("99")    // 99  
+float_num := float(3)   // 3.0  
+bool_val := bool(1)     // true
+</code></pre>
+
+<hr>
+
+<h3>Built-in Functions</h3>
+
+<pre><code>//Function      What it does
+println()       Prints to the console
+len()           Gets the length of a string or array
+append()        Adds items to an array
+</code></pre>
+
+<p>See more in the builtins reference!</p>
+
+</body>
+                                           </html>
